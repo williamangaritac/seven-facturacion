@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Perfil 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\willi\\OneDrive\\Escritorio\\digitalware\\src\\Seven.Facturacion.Api\\Seven.Facturacion.Api.csproj",
+      "workingDirectory": "C:\\Users\\willi\\OneDrive\\Escritorio\\digitalware\\src"
+    }
+  }
+}

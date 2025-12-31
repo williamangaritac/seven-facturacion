@@ -1,0 +1,218 @@
+/**
+ * @fileoverview Estilos globales de Seven Facturación.
+ *
+ * Define estilos base, reset CSS y clases utilitarias globales.
+ * Importa variables y mixins del sistema de diseño.
+ *
+ * @design_system Seven Facturación UI
+ * @author Seven Facturación Team
+ * @version 1.0.0
+ */
+
+@use 'app/shared/styles/variables' as *;
+@use 'app/shared/styles/mixins' as *;
+
+// =============================================================================
+// CSS RESET / NORMALIZE
+// =============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-text-primary;
+  background-color: $color-bg-secondary;
+}
+
+// =============================================================================
+// TIPOGRAFÍA BASE
+// =============================================================================
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  color: $color-text-primary;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-primary-dark;
+  }
+}
+
+// =============================================================================
+// BOTONES GLOBALES
+// =============================================================================
+
+.btn {
+  @include button-base;
+}
+
+.btn-primary {
+  @include button-primary;
+}
+
+.btn-secondary {
+  @include button-secondary;
+}
+
+.btn-success {
+  @include button-base;
+  background-color: $color-success;
+  color: white;
+  &:hover:not(:disabled) { background-color: $color-success-dark; }
+}
+
+.btn-danger {
+  @include button-base;
+  background-color: $color-danger;
+  color: white;
+  &:hover:not(:disabled) { background-color: $color-danger-dark; }
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: $color-primary;
+  cursor: pointer;
+  padding: 0;
+  &:hover { text-decoration: underline; }
+}
+
+.btn-icon {
+  @include button-icon;
+}
+
+.btn-sm {
+  padding: $spacing-xs $spacing-sm;
+  font-size: $font-size-xs;
+}
+
+// =============================================================================
+// FORMULARIOS GLOBALES
+// =============================================================================
+
+.form-control {
+  @include input-base;
+}
+
+.form-group {
+  margin-bottom: $spacing-md;
+}
+
+// =============================================================================
+// ALERTAS
+// =============================================================================
+
+.alert {
+  padding: $spacing-md;
+  border-radius: $border-radius-md;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.alert-danger {
+  background-color: rgba($color-danger, 0.1);
+  color: $color-danger;
+  border: 1px solid rgba($color-danger, 0.2);
+}
+
+.alert-success {
+  background-color: rgba($color-success, 0.1);
+  color: $color-success;
+  border: 1px solid rgba($color-success, 0.2);
+}
+
+// =============================================================================
+// BADGES
+// =============================================================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+}
+
+.badge-primary { background: rgba($color-primary, 0.15); color: $color-primary; }
+.badge-success { background: rgba($color-success, 0.15); color: $color-success; }
+.badge-warning { background: rgba($color-warning, 0.15); color: $color-warning-dark; }
+.badge-danger { background: rgba($color-danger, 0.15); color: $color-danger; }
+
+// =============================================================================
+// TABLAS
+// =============================================================================
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: $spacing-sm $spacing-md;
+    text-align: left;
+    border-bottom: 1px solid $color-border-light;
+  }
+
+  th {
+    background-color: $color-bg-tertiary;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  tbody tr:hover {
+    background-color: $color-bg-hover;
+  }
+
+  .text-right { text-align: right; }
+  .font-mono { font-family: $font-family-mono; }
+  .font-bold { font-weight: $font-weight-semibold; }
+}
+
+// =============================================================================
+// UTILIDADES
+// =============================================================================
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.font-mono { font-family: $font-family-mono; }
+
+// Spinner global
+.spinner {
+  @include spinner($color-primary, 40px);
+}
+
+// Loading container
+.loading-container {
+  @include flex-center;
+  flex-direction: column;
+  padding: $spacing-2xl;
+  color: $color-text-secondary;
+
+  p { margin-top: $spacing-md; }
+}

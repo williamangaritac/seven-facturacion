@@ -1,0 +1,91 @@
+<section class="page-container">
+  <header class="page-header">
+    <h1>{{ isEditing() ? 'Editar Producto' : 'Nuevo Producto' }}</h1>
+  </header>
+
+  @if (error()) {
+    <div class="alert alert-error">
+      {{ error() }}
+      <button (click)="error.set(null)" class="alert-close">×</button>
+    </div>
+  }
+
+  <form (ngSubmit)="guardar()" class="form-container">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="codigo">Código *</label>
+        <input
+          type="text"
+          id="codigo"
+          [(ngModel)]="formData.codigo"
+          name="codigo"
+          required
+          class="form-control"
+          placeholder="PROD-001"
+        />
+      </div>
+      <div class="form-group">
+        <label for="nombre">Nombre *</label>
+        <input
+          type="text"
+          id="nombre"
+          [(ngModel)]="formData.nombre"
+          name="nombre"
+          required
+          class="form-control"
+          placeholder="Nombre del producto"
+        />
+      </div>
+    </div>
+
+    <div class="form-group full-width">
+      <label for="descripcion">Descripción</label>
+      <textarea
+        id="descripcion"
+        [(ngModel)]="formData.descripcion"
+        name="descripcion"
+        class="form-control"
+        rows="3"
+        placeholder="Descripción detallada del producto"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="precio">Precio *</label>
+        <input
+          type="number"
+          id="precio"
+          [(ngModel)]="formData.precio"
+          name="precio"
+          required
+          min="0"
+          step="100"
+          class="form-control"
+          placeholder="0"
+        />
+      </div>
+      <div class="form-group">
+        <label for="stock">Stock *</label>
+        <input
+          type="number"
+          id="stock"
+          [(ngModel)]="formData.stock"
+          name="stock"
+          required
+          min="0"
+          class="form-control"
+          placeholder="0"
+        />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/productos" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading()">
+        {{ isLoading() ? 'Guardando...' : (isEditing() ? 'Actualizar' : 'Crear Producto') }}
+      </button>
+    </div>
+  </form>
+</section>
+

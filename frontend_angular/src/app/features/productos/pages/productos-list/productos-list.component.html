@@ -1,0 +1,219 @@
+<section class="page-container">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Productos</h1>
+      <span class="record-count">{{ productos().length }} registros</span>
+    </div>
+    <div class="page-actions">
+      <button (click)="filtrarStockBajo()" class="btn btn-warning" [disabled]="isLoading()">
+        📦 Stock Bajo (≤5)
+      </button>
+      <a routerLink="/productos/nuevo" class="btn btn-primary">
+        Nuevo Producto
+      </a>
+      <button (click)="cargarProductos()" class="btn btn-secondary" [disabled]="isLoading()">
+        {{ mostrandoStockBajo() ? 'Ver Todos' : 'Actualizar' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Formulario de búsqueda de ventas por año -->
+  <div class="search-panel">
+    <h3>📊 Buscar ventas por año</h3>
+    <form class="search-form" (ngSubmit)="buscarVentasPorAnio()">
+      <div class="form-group">
+        <label for="anio">Año:</label>
+        <input
+          type="number"
+          id="anio"
+          name="anio"
+          [(ngModel)]="anio"
+          placeholder="Ej: 2000"
+          min="1900"
+          [max]="Date.now() | date:'yyyy'"
+        />
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading()">
+          🔍 Buscar
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="limpiarFiltroVentas()" [disabled]="isLoading()">
+          🗑️ Limpiar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  @if (error()) {
+    <div class="alert alert-error">
+      {{ error() }}
+      <button (click)="error.set(null)" class="alert-close">×</button>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando productos...</p>
+    </div>
+  } @else if (mostrandoVentas()) {
+    <!-- Vista de ventas por producto -->
+    <div class="filter-banner">
+      <span class="filter-label">📊 Ventas del año {{ anio }}: {{ ventasPorProducto().length }} productos</span>
+      <button (click)="limpiarFiltroVentas()" class="btn btn-sm btn-secondary">Ver todos</button>
+    </div>
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>CÓDIGO</th>
+            <th>PRODUCTO</th>
+            <th>AÑO</th>
+            <th>CANTIDAD VENDIDA</th>
+            <th>MONTO TOTAL</th>
+            <th>N° FACTURAS</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (venta of ventasPorProducto(); track venta.productoId) {
+            <tr>
+              <td class="code-cell">{{ venta.codigoProducto }}</td>
+              <td>{{ venta.nombreProducto }}</td>
+              <td>
+                <span class="badge badge-primary">
+                  {{ anio }}
+                </span>
+              </td>
+              <td>
+                <span class="badge badge-info">
+                  {{ venta.cantidadTotalVendida }} uds
+                </span>
+              </td>
+              <td class="currency-cell">
+                {{ venta.montoTotalVendido | currency:'COP':'symbol-narrow':'1.0-0' }}
+              </td>
+              <td>{{ venta.numeroFacturas }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="empty-state">
+                <p>No se encontraron ventas para el año {{ anio }}</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else if (mostrandoStockBajo()) {
+    <!-- Vista de productos con stock bajo -->
+    <div class="filter-banner">
+      <span class="filter-label">⚠️ Mostrando productos con stock ≤ 5 unidades</span>
+      <button (click)="cargarProductos()" class="btn btn-sm btn-secondary">Quitar filtro</button>
+    </div>
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>STOCK ACTUAL</th>
+            <th>ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (producto of productosBajoStock(); track producto.productoId) {
+            <tr class="stock-bajo-row">
+              <td>{{ producto.productoId }}</td>
+              <td>{{ producto.nombre }}</td>
+              <td>
+                <span class="badge badge-danger">
+                  {{ producto.stock }} uds
+                </span>
+              </td>
+              <td class="actions-cell">
+                <a [routerLink]="['/productos', producto.productoId, 'editar']" class="btn btn-sm btn-primary">
+                  Reabastecer
+                </a>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="empty-state success">
+                <p>✅ No hay productos con stock bajo</p>
+                <p class="text-muted">Todos los productos tienen más de 5 unidades</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <!-- Vista normal de todos los productos -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>CÓDIGO</th>
+            <th>NOMBRE</th>
+            <th>DESCRIPCIÓN</th>
+            <th>PRECIO</th>
+            <th>STOCK</th>
+            <th>AÑO ÚLTIMA VENTA</th>
+            <th>ESTADO</th>
+            <th>ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (producto of productos(); track producto.id) {
+            <tr>
+              <td class="code-cell">{{ producto.codigo }}</td>
+              <td>{{ producto.nombre }}</td>
+              <td class="description-cell">{{ producto.descripcion || '-' }}</td>
+              <td class="currency-cell">{{ producto.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+              <td>
+                <span [class]="getStockClass(producto)">
+                  {{ producto.stock }} uds
+                </span>
+              </td>
+              <td>
+                @if (producto.anioUltimaVenta) {
+                  <span class="badge badge-primary">
+                    {{ producto.anioUltimaVenta }}
+                  </span>
+                } @else {
+                  <span class="text-muted">Sin ventas</span>
+                }
+              </td>
+              <td>
+                <span [class]="producto.activo ? 'badge badge-success' : 'badge badge-danger'">
+                  {{ producto.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <a [routerLink]="['/productos', producto.id]" class="btn-icon" title="Ver detalle">
+                  👁️
+                </a>
+                <a [routerLink]="['/productos', producto.id, 'editar']" class="btn-icon" title="Editar">
+                  ✏️
+                </a>
+                <button (click)="eliminarProducto(producto.id)" class="btn-icon btn-danger" title="Eliminar">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-state">
+                <p>No hay productos registrados</p>
+                <a routerLink="/productos/nuevo" class="btn btn-primary">
+                  Crear primer producto
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+

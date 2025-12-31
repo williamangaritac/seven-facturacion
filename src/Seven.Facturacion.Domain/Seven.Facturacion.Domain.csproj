@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Configuración de .NET 10 con C# 14 -->
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <!-- Información del proyecto -->
+    <RootNamespace>Seven.Facturacion.Domain</RootNamespace>
+    <AssemblyName>Seven.Facturacion.Domain</AssemblyName>
+    
+    <!-- Configuración de calidad de código -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>7</WarningLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    
+    <!-- Metadatos del ensamblado -->
+    <Authors>Seven Facturación</Authors>
+    <Description>Capa de dominio - Entidades, interfaces y excepciones del sistema de facturación</Description>
+    <Copyright>© 2024 Seven Facturación</Copyright>
+  </PropertyGroup>
+
+  <!-- 
+    NOTA: Esta capa NO tiene dependencias externas (NuGet packages)
+    Esto cumple con Clean Architecture: el dominio es independiente
+  -->
+
+</Project>
+

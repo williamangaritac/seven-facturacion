@@ -1,0 +1,206 @@
+<!--
+  @fileoverview Template del reporte de ventas.
+  @component VentasReporteComponent
+-->
+
+<div class="reporte-container">
+  <header class="page-header">
+    <div class="header-title">
+      <h1>📊 Reportes y Análisis</h1>
+    </div>
+
+    <div class="header-actions">
+      <a routerLink="/facturacion" class="btn btn-secondary">
+        ⬅️ Volver
+      </a>
+    </div>
+  </header>
+
+  <!-- ========== SECCIÓN: Estimación de Próxima Compra ========== -->
+  <section class="reporte-section proxima-compra-section">
+    <div class="section-header">
+      <h2>🔮 Estimación de Próxima Compra</h2>
+    </div>
+    <p class="section-description">
+      Analiza el historial de compras de un cliente para predecir cuándo realizará su próxima compra.
+      El sistema calcula el promedio de días entre compras y proyecta la fecha estimada.
+    </p>
+
+    <div class="search-card">
+      <!-- Búsqueda y selección -->
+      <div class="search-form">
+        <div class="form-group search-field">
+          <label for="busquedaCliente">🔎 Buscar cliente</label>
+          <input
+            type="text"
+            id="busquedaCliente"
+            class="form-control"
+            placeholder="Escriba nombre o teléfono..."
+            [value]="busquedaCliente"
+            (input)="onBusquedaChange($event)">
+        </div>
+
+        <div class="form-group cliente-select">
+          <label for="clienteProxima">Seleccionar de la lista</label>
+          <select
+            id="clienteProxima"
+            class="form-control"
+            (change)="onClienteChange($event)">
+            <option value="">-- {{ clientesFiltrados().length }} clientes disponibles --</option>
+            @for (cliente of clientesFiltrados(); track cliente.id) {
+              <option [value]="cliente.id">
+                {{ cliente.nombreCompleto }} {{ cliente.telefono ? '• ' + cliente.telefono : '' }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-primary btn-consultar"
+          [disabled]="!clienteSeleccionadoId() || isLoadingProximaCompra()"
+          (click)="consultarProximaCompra()">
+          @if (isLoadingProximaCompra()) {
+            <span class="spinner-sm"></span>
+            Analizando...
+          } @else {
+            🔮 Calcular Predicción
+          }
+        </button>
+      </div>
+
+      <!-- Resultado de la consulta -->
+      @if (errorProximaCompra()) {
+        <div class="alert alert-warning resultado-alert">
+          ⚠️ {{ errorProximaCompra() }}
+        </div>
+      }
+
+      @if (proximaCompra(); as pc) {
+        <div class="resultado-card">
+          <div class="resultado-header">
+            <div class="cliente-info">
+              <span class="cliente-nombre">👤 {{ pc.nombreCliente }}</span>
+              <span class="cliente-compras">{{ pc.totalCompras }} compras registradas</span>
+            </div>
+            <span class="badge-prediccion" [ngClass]="getEstadoPrediccionClass(pc.estadoPrediccion)">
+              {{ getEstadoPrediccionIcon(pc.estadoPrediccion) }} {{ pc.estadoPrediccion }}
+            </span>
+          </div>
+
+          <!-- Métricas secundarias -->
+          <div class="metricas-row">
+            <div class="metrica-item">
+              <span class="metrica-icon">📅</span>
+              <div class="metrica-content">
+                <span class="metrica-label">Última compra realizada</span>
+                <span class="metrica-value">{{ pc.ultimaCompra | date:'dd MMMM yyyy' }}</span>
+              </div>
+            </div>
+            <div class="metrica-item">
+              <span class="metrica-icon">⏱️</span>
+              <div class="metrica-content">
+                <span class="metrica-label">Frecuencia promedio</span>
+                <span class="metrica-value">Cada {{ pc.promedioDiasEntreCompras }} días</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fecha estimada destacada -->
+          <div class="prediccion-destacada">
+            <div class="prediccion-label">
+              <span class="prediccion-icon">🎯</span>
+              <span>Próxima compra estimada</span>
+            </div>
+            <div class="prediccion-fecha">
+              {{ pc.proximaCompraEstimada | date:'dd' }}
+              <span class="prediccion-mes">{{ pc.proximaCompraEstimada | date:'MMMM' }}</span>
+              <span class="prediccion-anio">{{ pc.proximaCompraEstimada | date:'yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+      } @else if (proximaCompraConsultada() && !isLoadingProximaCompra() && !errorProximaCompra()) {
+        <div class="empty-resultado">
+          <span>📭</span>
+          <p>No se encontraron datos para este cliente</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ========== SECCIÓN: Reporte de Ventas por Producto ========== -->
+  <section class="reporte-section ventas-section">
+    <div class="section-header">
+      <h2>📦 Ventas por Producto</h2>
+      <div class="filter-group">
+        <label for="anio">Año:</label>
+        <select
+          id="anio"
+          [(ngModel)]="anioSeleccionado"
+          (change)="onAnioChange()"
+          class="form-control">
+          @for (anio of aniosDisponibles; track anio) {
+            <option [value]="anio">{{ anio }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="alert alert-danger">{{ error() }}</div>
+    }
+
+    @if (isLoading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando reporte...</p>
+      </div>
+    } @else {
+      <!-- Resumen -->
+      <div class="summary-cards">
+        <div class="summary-card">
+          <span class="card-value">{{ ventas().length }}</span>
+          <span class="card-label">Productos vendidos</span>
+        </div>
+        <div class="summary-card primary">
+          <span class="card-value">{{ getTotalVentas() | currency:'COP':'symbol':'1.0-0' }}</span>
+          <span class="card-label">Total de ventas</span>
+        </div>
+      </div>
+
+      <!-- Tabla de ventas -->
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Producto</th>
+              <th class="text-right">Cantidad Vendida</th>
+              <th class="text-right">Monto Total</th>
+              <th class="text-right">Nº Facturas</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (venta of ventas(); track venta.productoId) {
+              <tr>
+                <td class="font-mono">{{ venta.codigoProducto }}</td>
+                <td>{{ venta.nombreProducto }}</td>
+                <td class="text-right">{{ venta.cantidadTotalVendida }}</td>
+                <td class="text-right font-bold">{{ venta.montoTotalVendido | currency:'COP':'symbol':'1.0-0' }}</td>
+                <td class="text-right">{{ venta.numeroFacturas }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="empty-state">
+                  <i class="icon-inbox"></i>
+                  <p>No hay ventas registradas para {{ anioSeleccionado }}</p>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</div>
+

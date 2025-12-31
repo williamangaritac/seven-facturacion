@@ -1,0 +1,150 @@
+<!--
+  @fileoverview Template del listado de facturas.
+  
+  Implementa diseño estilo Odoo con header de acciones,
+  tabla responsive y estados visuales con badges.
+  
+  @component FacturasListComponent
+  @author Seven Facturación Team
+-->
+
+<div class="facturas-container">
+  <!-- Header con título y acciones -->
+  <header class="page-header">
+    <div class="header-title">
+      <h1>
+        <i class="icon-invoice"></i>
+        Facturas
+      </h1>
+      <span class="record-count">
+        {{ facturas().length }} registros
+      </span>
+    </div>
+    
+    <div class="header-actions">
+      <button
+        class="btn-header btn-header-create"
+        routerLink="nueva"
+        aria-label="Crear nueva factura"
+        title="Crear una nueva factura para un cliente">
+        <span class="btn-header-icon">📄</span>
+        <div class="btn-header-content">
+          <span class="btn-header-text">Nueva Factura</span>
+          <span class="btn-header-subtitle">Crear documento</span>
+        </div>
+      </button>
+
+      <button
+        class="btn-header btn-header-refresh"
+        (click)="cargarFacturas()"
+        [disabled]="isLoading()"
+        aria-label="Recargar listado"
+        title="Actualizar la lista de facturas">
+        <span class="btn-header-icon" [class.spinning]="isLoading()">🔄</span>
+        <div class="btn-header-content">
+          <span class="btn-header-text">Actualizar</span>
+          <span class="btn-header-subtitle">Recargar lista</span>
+        </div>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mensaje de error -->
+  @if (error()) {
+    <div class="alert alert-danger" role="alert">
+      <i class="icon-warning"></i>
+      {{ error() }}
+      <button class="alert-close" (click)="error.set(null)">×</button>
+    </div>
+  }
+
+  <!-- Estado de carga -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando facturas...</p>
+    </div>
+  } @else {
+    <!-- Tabla de facturas -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            @for (col of columnas; track col.field) {
+              <th [style.width.px]="col.width">
+                {{ col.header }}
+              </th>
+            }
+            <th class="actions-column">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (factura of facturas(); track factura.id) {
+            <tr>
+              <td class="font-mono">{{ factura.numeroFactura }}</td>
+              <td>{{ factura.nombreCliente }}</td>
+              <td>{{ factura.fecha | date:'dd/MM/yyyy' }}</td>
+              <td class="text-right">{{ factura.subtotal | currency:'COP':'symbol':'1.0-0' }}</td>
+              <td class="text-right">{{ factura.impuesto | currency:'COP':'symbol':'1.0-0' }}</td>
+              <td class="text-right font-bold">{{ factura.total | currency:'COP':'symbol':'1.0-0' }}</td>
+              <td>
+                <span class="badge" [ngClass]="getEstadoClass(factura.estado)">
+                  {{ factura.estado }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <div class="actions-wrapper">
+                  <button
+                    class="btn-action btn-action-view"
+                    [routerLink]="[factura.id]"
+                    title="Ver información completa de la factura">
+                    <span class="btn-action-icon">👁️</span>
+                    <span class="btn-action-text">Ver Detalle</span>
+                  </button>
+
+                  @if (factura.estado === 'PENDIENTE') {
+                    <button
+                      class="btn-action btn-action-pay"
+                      (click)="cambiarEstado(factura.id, 'PAGADA')"
+                      title="Confirmar que el cliente pagó esta factura">
+                      <span class="btn-action-icon">💰</span>
+                      <span class="btn-action-text">Marcar Pagada</span>
+                    </button>
+                    <button
+                      class="btn-action btn-action-cancel"
+                      (click)="cambiarEstado(factura.id, 'ANULADA')"
+                      title="Cancelar esta factura permanentemente">
+                      <span class="btn-action-icon">🚫</span>
+                      <span class="btn-action-text">Anular Factura</span>
+                    </button>
+                  }
+
+                  @if (factura.estado === 'PAGADA') {
+                    <button
+                      class="btn-action btn-action-cancel"
+                      (click)="cambiarEstado(factura.id, 'ANULADA')"
+                      title="Cancelar esta factura permanentemente">
+                      <span class="btn-action-icon">🚫</span>
+                      <span class="btn-action-text">Anular Factura</span>
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-state">
+                <i class="icon-inbox"></i>
+                <p>No hay facturas registradas</p>
+                <button class="btn btn-primary" routerLink="nueva">
+                  Crear primera factura
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+

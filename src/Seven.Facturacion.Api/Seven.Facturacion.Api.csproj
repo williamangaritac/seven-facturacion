@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!-- Configuración de .NET 10 con C# 14 -->
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <!-- Información del proyecto -->
+    <RootNamespace>Seven.Facturacion.Api</RootNamespace>
+    <AssemblyName>Seven.Facturacion.Api</AssemblyName>
+    
+    <!-- Configuración de calidad de código -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>5</WarningLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    
+    <!-- Metadatos del ensamblado -->
+    <Authors>Seven Facturación</Authors>
+    <Description>API REST para el sistema de facturación</Description>
+    <Copyright>© 2024 Seven Facturación</Copyright>
+    
+    <!-- Configuración de API -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- Referencias a proyectos internos -->
+  <ItemGroup>
+    <ProjectReference Include="..\Seven.Facturacion.Application\Seven.Facturacion.Application.csproj" />
+    <ProjectReference Include="..\Seven.Facturacion.Infrastructure\Seven.Facturacion.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
+  </ItemGroup>
+
+  <!-- 
+    NOTA: No se agregan paquetes NuGet adicionales.
+    ASP.NET Core viene incluido con el SDK Web.
+    OpenAPI/Swagger está incluido por defecto en .NET 10.
+  -->
+
+</Project>
+

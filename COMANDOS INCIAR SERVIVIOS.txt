@@ -1,0 +1,44 @@
+
+
+
+---------------------------------
+
+
+---------------------------------
+
+
+
+
+
+---------------------------------
+inicar servidor en .NET:
+
+dotnet run --project src/Seven.Facturacion.Api
+
+--- ruta ue se debe ejecutar:	src/Seven.Facturacion.Api
+
+
+
+
+---------------------------------
+
+ambiente de api backend -  swagger
+
+https://localhost:49497/swagger/index.html
+
+
+
+---------------------------------
+
+ambiente frontend
+
+
+http://localhost:4200
+
+http://localhost:4200/facturacion
+
+
+
+---------------------------------
+
+

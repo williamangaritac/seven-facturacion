@@ -1,0 +1,52 @@
+/**
+ * TypeScript configuration for Seven Facturación Angular App.
+ *
+ * @see https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+ * @see https://angular.dev/reference/configs/angular-compiler-options
+ *
+ * @author Seven Facturación Team
+ */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    // Strict type checking
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Module resolution
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "baseUrl": "./src",
+
+    // Path aliases for clean imports
+    "paths": {
+      "@core": ["app/core/index"],
+      "@core/*": ["app/core/*"],
+      "@shared": ["app/shared/index"],
+      "@shared/*": ["app/shared/*"],
+      "@features/*": ["app/features/*"],
+      "@models": ["app/shared/models/index"],
+      "@ui": ["app/shared/ui/index"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}

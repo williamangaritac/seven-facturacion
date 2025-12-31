@@ -1,0 +1,252 @@
+@use '../../../../shared/styles/variables' as *;
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.page-title {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-md;
+
+  h1 {
+    margin: 0;
+    font-size: $font-size-2xl;
+    color: $color-text-primary;
+  }
+
+  .record-count {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.page-actions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.table-container {
+  background: white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: $spacing-sm $spacing-md;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
+
+  th {
+    background-color: $color-bg-tertiary;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+  }
+
+  tr:hover {
+    background-color: rgba($color-primary, 0.02);
+  }
+}
+
+.code-cell {
+  font-family: monospace;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+}
+
+.description-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.currency-cell {
+  font-weight: $font-weight-semibold;
+  text-align: right;
+}
+
+.actions-cell {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-xs;
+  border-radius: $border-radius-sm;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: $color-bg-tertiary;
+  }
+
+  &.btn-danger:hover {
+    background-color: rgba($color-danger, 0.1);
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: $spacing-2xl !important;
+
+  p {
+    color: $color-text-secondary;
+    margin-bottom: $spacing-md;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-2xl;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $color-border;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Panel de búsqueda
+.search-panel {
+  background: white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-sm;
+
+  h3 {
+    margin: 0 0 $spacing-md 0;
+    font-size: $font-size-lg;
+    color: $color-text-primary;
+  }
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: $spacing-md;
+  align-items: end;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $color-text-secondary;
+    }
+
+    input {
+      padding: $spacing-sm;
+      border: 1px solid $color-border;
+      border-radius: $border-radius-md;
+      font-size: $font-size-base;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+}
+
+// Estilos para filtro de stock bajo
+.filter-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm $spacing-md;
+  margin-bottom: $spacing-md;
+  background-color: rgba($color-info, 0.1);
+  border: 1px solid $color-info;
+  border-radius: $border-radius-md;
+
+  .filter-label {
+    font-weight: $font-weight-medium;
+    color: $color-info;
+  }
+}
+
+.stock-bajo-row {
+  background-color: rgba($color-warning, 0.05);
+
+  &:hover {
+    background-color: rgba($color-warning, 0.1) !important;
+  }
+}
+
+.empty-state.success {
+  background-color: rgba($color-success, 0.05);
+
+  p:first-child {
+    color: $color-success;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.text-muted {
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+}
+
+.btn-sm {
+  padding: $spacing-xs $spacing-sm;
+  font-size: $font-size-sm;
+}
+
+.btn-warning {
+  background-color: $color-warning;
+  color: #212529;
+  border: none;
+
+  &:hover:not(:disabled) {
+    background-color: $color-warning-dark;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.badge-info {
+  background-color: $color-info;
+  color: white;
+}
+

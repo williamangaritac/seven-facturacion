@@ -1,0 +1,122 @@
+<!--
+  @fileoverview Template del detalle de factura.
+  @component FacturaDetailComponent
+-->
+
+<div class="detail-container">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando factura...</p>
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-danger">
+      {{ error() }}
+      <a routerLink="/facturacion" class="btn btn-link">Volver al listado</a>
+    </div>
+  } @else if (factura(); as f) {
+    <!-- Header -->
+    <header class="detail-header">
+      <div class="header-info">
+        <h1>{{ f.numeroFactura }}</h1>
+        <span class="badge" [ngClass]="getEstadoClass(f.estado)">
+          {{ f.estado }}
+        </span>
+      </div>
+      <div class="header-actions">
+        <a routerLink="/facturacion"
+           class="btn-detail btn-detail-back"
+           title="Regresar a la lista de facturas">
+          <span class="btn-detail-icon">⬅️</span>
+          <span class="btn-detail-text">Volver</span>
+        </a>
+        @if (f.estado === 'PENDIENTE') {
+          <a [routerLink]="['/facturacion', f.id, 'editar']"
+             class="btn-detail btn-detail-edit"
+             title="Editar cliente y productos de esta factura">
+            <span class="btn-detail-icon">✏️</span>
+            <span class="btn-detail-text">Editar</span>
+          </a>
+          <button class="btn-detail btn-detail-pay"
+                  (click)="cambiarEstado('PAGADA')"
+                  title="Confirmar que el cliente pagó esta factura">
+            <span class="btn-detail-icon">💰</span>
+            <span class="btn-detail-text">Marcar Pagada</span>
+          </button>
+          <button class="btn-detail btn-detail-cancel"
+                  (click)="cambiarEstado('ANULADA')"
+                  title="Cancelar esta factura permanentemente">
+            <span class="btn-detail-icon">🚫</span>
+            <span class="btn-detail-text">Anular Factura</span>
+          </button>
+        }
+        @if (f.estado === 'PAGADA') {
+          <button class="btn-detail btn-detail-cancel"
+                  (click)="cambiarEstado('ANULADA')"
+                  title="Cancelar esta factura permanentemente">
+            <span class="btn-detail-icon">🚫</span>
+            <span class="btn-detail-text">Anular Factura</span>
+          </button>
+        }
+      </div>
+    </header>
+
+    <!-- Info general -->
+    <section class="info-section">
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Cliente</label>
+          <span>{{ f.nombreCliente }}</span>
+        </div>
+        <div class="info-item">
+          <label>Fecha</label>
+          <span>{{ f.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detalles -->
+    <section class="detalles-section">
+      <h2>Productos</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th class="text-right">Cantidad</th>
+            <th class="text-right">Precio Unit.</th>
+            <th class="text-right">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (detalle of f.detalles; track detalle.id) {
+            <tr>
+              <td>{{ detalle.nombreProducto }}</td>
+              <td class="text-right">{{ detalle.cantidad }}</td>
+              <td class="text-right">{{ detalle.precioUnitario | currency:'COP':'symbol':'1.0-0' }}</td>
+              <td class="text-right">{{ detalle.subtotal | currency:'COP':'symbol':'1.0-0' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Totales -->
+    <section class="totales-section">
+      <div class="totales-grid">
+        <div class="total-row">
+          <span>Subtotal</span>
+          <span>{{ f.subtotal | currency:'COP':'symbol':'1.0-0' }}</span>
+        </div>
+        <div class="total-row">
+          <span>IVA 19%</span>
+          <span>{{ f.impuesto | currency:'COP':'symbol':'1.0-0' }}</span>
+        </div>
+        <div class="total-row total-final">
+          <span>Total</span>
+          <span>{{ f.total | currency:'COP':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+    </section>
+  }
+</div>
+

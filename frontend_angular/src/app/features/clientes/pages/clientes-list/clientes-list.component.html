@@ -1,0 +1,271 @@
+<section class="page-container">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Clientes</h1>
+      <span class="record-count">{{ clientesMostrados().length }} de {{ clientes().length }} registros</span>
+    </div>
+    <div class="page-actions">
+      <a routerLink="/clientes/nuevo" class="btn btn-primary">
+        Nuevo Cliente
+      </a>
+      <button (click)="cargarClientes()" class="btn btn-secondary">
+        Actualizar
+      </button>
+    </div>
+  </header>
+
+  <!-- Búsqueda rápida por nombre -->
+  <div class="quick-search-panel">
+    <div class="search-input-container">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar por nombre o apellido..."
+        [(ngModel)]="terminoBusqueda"
+        (input)="filtrarPorNombre()"
+      />
+      @if (terminoBusqueda) {
+        <button class="search-clear" (click)="limpiarBusquedaNombre()" title="Limpiar búsqueda">
+          ✕
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Formulario de búsqueda avanzada -->
+  <div class="search-panel">
+    <h3>🔍 Buscar por edad y fecha de compra</h3>
+    <form class="search-form" (ngSubmit)="buscarPorCriterios()">
+      <div class="form-group">
+        <label for="edadMaxima">Edad máxima:</label>
+        <input
+          type="number"
+          id="edadMaxima"
+          name="edadMaxima"
+          [(ngModel)]="edadMaxima"
+          placeholder="Ej: 35"
+          min="1"
+          max="120"
+        />
+      </div>
+      <div class="form-group">
+        <label for="fechaDesde">Fecha desde:</label>
+        <input
+          type="date"
+          id="fechaDesde"
+          name="fechaDesde"
+          [(ngModel)]="fechaDesde"
+        />
+      </div>
+      <div class="form-group">
+        <label for="fechaHasta">Fecha hasta:</label>
+        <input
+          type="date"
+          id="fechaHasta"
+          name="fechaHasta"
+          [(ngModel)]="fechaHasta"
+        />
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading()">
+          🔍 Buscar
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="limpiarFiltros()" [disabled]="isLoading()">
+          🗑️ Limpiar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  @if (error()) {
+    <div class="alert alert-error">
+      {{ error() }}
+      <button (click)="error.set(null)" class="alert-close">×</button>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando clientes...</p>
+    </div>
+  } @else if (mostrandoFiltrados()) {
+    <!-- Vista filtrada -->
+    <div class="filter-banner">
+      <span class="filter-label">📊 Resultados de búsqueda: {{ clientesFiltrados().length }} clientes</span>
+      <button (click)="limpiarFiltros()" class="btn btn-sm btn-secondary">Ver todos</button>
+    </div>
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NOMBRE COMPLETO</th>
+            <th>EMAIL</th>
+            <th>EDAD</th>
+            <th>COMPRAS EN PERÍODO</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cliente of clientesFiltrados(); track cliente.clienteId) {
+            <tr>
+              <td>{{ cliente.clienteId }}</td>
+              <td>{{ cliente.nombreCompleto }}</td>
+              <td>{{ cliente.correo }}</td>
+              <td>{{ cliente.edad }} años</td>
+              <td>
+                <span class="badge badge-info">
+                  {{ cliente.totalComprasPeriodo }} compras
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-state">
+                <p>No se encontraron clientes con los criterios especificados</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <!-- Vista normal -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NOMBRE COMPLETO</th>
+            <th>EMAIL</th>
+            <th>TELÉFONO</th>
+            <th>EDAD</th>
+            <th>ESTADO</th>
+            <th>ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cliente of clientesMostrados(); track cliente.id) {
+            <tr>
+              <td>{{ cliente.id }}</td>
+              <td [innerHTML]="resaltarBusqueda(cliente.nombreCompleto)"></td>
+              <td>{{ cliente.correoElectronico }}</td>
+              <td>{{ cliente.telefono || '-' }}</td>
+              <td>{{ cliente.edad }} años</td>
+              <td>
+                <span [class]="cliente.activo ? 'badge badge-success' : 'badge badge-danger'">
+                  {{ cliente.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <button
+                  (click)="verProximaCompra(cliente.id)"
+                  class="btn-prediccion"
+                  title="Ver predicción de próxima compra">
+                  <span class="btn-prediccion-icon">📊</span>
+                  <span class="btn-prediccion-text">Próxima Compra</span>
+                </button>
+                <div class="actions-group">
+                  <a [routerLink]="['/clientes', cliente.id]" class="btn-icon" title="Ver detalle">
+                    👁️
+                  </a>
+                  <a [routerLink]="['/clientes', cliente.id, 'editar']" class="btn-icon" title="Editar">
+                    ✏️
+                  </a>
+                  <button (click)="eliminarCliente(cliente.id)" class="btn-icon btn-danger" title="Eliminar">
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="empty-state">
+                @if (terminoBusqueda) {
+                  <p>No se encontraron clientes con "{{ terminoBusqueda }}"</p>
+                  <button (click)="limpiarBusquedaNombre()" class="btn btn-secondary">
+                    Mostrar todos
+                  </button>
+                } @else {
+                  <p>No hay clientes registrados</p>
+                  <a routerLink="/clientes/nuevo" class="btn btn-primary">
+                    Crear primer cliente
+                  </a>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Panel de Predicción de Próxima Compra -->
+  @if (clienteSeleccionado()) {
+    <div class="prediction-overlay" (click)="cerrarPrediccion()">
+      <div class="prediction-panel" (click)="$event.stopPropagation()">
+        <div class="prediction-header">
+          <h3>🎯 Predicción de Próxima Compra</h3>
+          <button (click)="cerrarPrediccion()" class="btn-close">✕</button>
+        </div>
+
+        @if (cargandoPrediccion()) {
+          <div class="prediction-loading">
+            <div class="spinner"></div>
+            <p>Calculando predicción...</p>
+          </div>
+        } @else if (errorPrediccion()) {
+          <div class="prediction-error">
+            <p class="error-icon">⚠️</p>
+            <p>{{ errorPrediccion() }}</p>
+            <button (click)="cerrarPrediccion()" class="btn btn-secondary">Cerrar</button>
+          </div>
+        } @else if (proximaCompra(); as prediccion) {
+          <div class="prediction-content">
+            <div class="prediction-info">
+              <div class="info-row">
+                <span class="label">Cliente:</span>
+                <span class="value">{{ prediccion.nombreCliente }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Total de compras:</span>
+                <span class="value badge badge-primary">{{ prediccion.totalCompras }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Última compra:</span>
+                <span class="value">{{ prediccion.ultimaCompra | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Frecuencia promedio:</span>
+                <span class="value">Cada {{ prediccion.promedioDiasEntreCompras }} días</span>
+              </div>
+            </div>
+
+            <div class="prediction-result">
+              <div class="result-label">Próxima compra estimada:</div>
+              <div class="result-date">
+                {{ prediccion.proximaCompraEstimada | date:'dd/MM/yyyy' }}
+              </div>
+              <div class="result-status">
+                <span [class]="getEstadoPrediccionClass(prediccion.estadoPrediccion)">
+                  {{ prediccion.estadoPrediccion }}
+                </span>
+              </div>
+            </div>
+
+            <div class="prediction-explanation">
+              <p class="explanation-title">¿Cómo funciona esta predicción?</p>
+              <p class="explanation-text">
+                Nuestro sistema analiza el historial completo de compras del cliente y calcula el promedio de días entre cada transacción.
+                Esta información se utiliza para estimar con precisión cuándo es más probable que el cliente realice su próxima compra,
+                permitiéndole anticiparse y ofrecer un mejor servicio.
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</section>
+

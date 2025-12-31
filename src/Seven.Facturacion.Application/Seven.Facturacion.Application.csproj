@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Configuración de .NET 10 con C# 14 -->
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <!-- Información del proyecto -->
+    <RootNamespace>Seven.Facturacion.Application</RootNamespace>
+    <AssemblyName>Seven.Facturacion.Application</AssemblyName>
+    
+    <!-- Configuración de calidad de código -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>5</WarningLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <!-- Deshabilitar warnings específicos que no aplican a este contexto -->
+    <NoWarn>$(NoWarn);CA1000;CA1848</NoWarn>
+    
+    <!-- Metadatos del ensamblado -->
+    <Authors>Seven Facturación</Authors>
+    <Description>Capa de aplicación - DTOs, servicios y casos de uso del sistema de facturación</Description>
+    <Copyright>© 2024 Seven Facturación</Copyright>
+  </PropertyGroup>
+
+  <!-- Referencia a la capa de dominio (única dependencia) -->
+  <ItemGroup>
+    <ProjectReference Include="..\Seven.Facturacion.Domain\Seven.Facturacion.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
+  </ItemGroup>
+
+  <!-- 
+    NOTA: Esta capa NO tiene dependencias NuGet externas
+    Solo depende de Domain siguiendo Clean Architecture
+  -->
+
+</Project>
+

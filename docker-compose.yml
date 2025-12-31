@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # BASE DE DATOS POSTGRESQL
+  # ==========================================================================
+  postgres:
+    image: postgres:16
+    container_name: seven_facturacion_db
+    environment:
+      POSTGRES_DB: seven_facturacion_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./Scripts/00_crear_esquema.sql:/docker-entrypoint-initdb.d/00_crear_esquema.sql
+      - ./Scripts/01_crear_tablas.sql:/docker-entrypoint-initdb.d/01_crear_tablas.sql
+      - ./Scripts/02_insertar_datos.sql:/docker-entrypoint-initdb.d/02_insertar_datos.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - seven_network
+
+  # ==========================================================================
+  # BACKEND API (.NET 10)
+  # ==========================================================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: seven_facturacion_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=seven_facturacion_dev;Username=postgres;Password=postgres
+    ports:
+      - "5000:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - seven_network
+
+  # ==========================================================================
+  # FRONTEND ANGULAR
+  # ==========================================================================
+  frontend:
+    build:
+      context: ./frontend_angular
+      dockerfile: Dockerfile
+    container_name: seven_facturacion_frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+    networks:
+      - seven_network
+
+# ==========================================================================
+# VOLÚMENES Y REDES
+# ==========================================================================
+volumes:
+  postgres_data:
+
+networks:
+  seven_network:
+    driver: bridge
+

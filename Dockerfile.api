@@ -1,0 +1,56 @@
+# ============================================================================
+# DOCKERFILE - Backend API .NET 10
+# Sistema de Facturación Seven
+# Multi-stage build para optimizar tamaño de imagen
+# ============================================================================
+
+# ==========================================================================
+# STAGE 1: BUILD
+# ==========================================================================
+FROM mcr.microsoft.com/dotnet/sdk:10.0-preview AS build
+WORKDIR /src
+
+# Copiar archivos de proyecto y restaurar dependencias
+COPY src/Seven.Facturacion.Domain/*.csproj ./Seven.Facturacion.Domain/
+COPY src/Seven.Facturacion.Application/*.csproj ./Seven.Facturacion.Application/
+COPY src/Seven.Facturacion.Infrastructure/*.csproj ./Seven.Facturacion.Infrastructure/
+COPY src/Seven.Facturacion.Api/*.csproj ./Seven.Facturacion.Api/
+
+# Restaurar dependencias
+RUN dotnet restore ./Seven.Facturacion.Api/Seven.Facturacion.Api.csproj
+
+# Copiar todo el código fuente
+COPY src/Seven.Facturacion.Domain/ ./Seven.Facturacion.Domain/
+COPY src/Seven.Facturacion.Application/ ./Seven.Facturacion.Application/
+COPY src/Seven.Facturacion.Infrastructure/ ./Seven.Facturacion.Infrastructure/
+COPY src/Seven.Facturacion.Api/ ./Seven.Facturacion.Api/
+
+# Compilar y publicar en modo Release
+RUN dotnet publish ./Seven.Facturacion.Api/Seven.Facturacion.Api.csproj \
+    -c Release \
+    -o /app/publish \
+    --no-restore
+
+# ==========================================================================
+# STAGE 2: RUNTIME
+# ==========================================================================
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-preview AS runtime
+WORKDIR /app
+
+# Copiar archivos publicados
+COPY --from=build /app/publish .
+
+# Exponer puerto
+EXPOSE 8080
+
+# Variables de entorno por defecto
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Comando de inicio
+ENTRYPOINT ["dotnet", "Seven.Facturacion.Api.dll"]
+

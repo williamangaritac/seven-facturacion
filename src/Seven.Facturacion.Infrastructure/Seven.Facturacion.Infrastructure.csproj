@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Configuración de .NET 10 con C# 14 -->
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <!-- Información del proyecto -->
+    <RootNamespace>Seven.Facturacion.Infrastructure</RootNamespace>
+    <AssemblyName>Seven.Facturacion.Infrastructure</AssemblyName>
+    
+    <!-- Configuración de calidad de código -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>7</WarningLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    
+    <!-- Metadatos del ensamblado -->
+    <Authors>Seven Facturación</Authors>
+    <Description>Capa de infraestructura - Persistencia, repositorios y acceso a PostgreSQL</Description>
+    <Copyright>© 2024 Seven Facturación</Copyright>
+  </PropertyGroup>
+
+  <!-- Referencias a proyectos internos -->
+  <ItemGroup>
+    <ProjectReference Include="..\Seven.Facturacion.Domain\Seven.Facturacion.Domain.csproj" />
+    <ProjectReference Include="..\Seven.Facturacion.Application\Seven.Facturacion.Application.csproj" />
+  </ItemGroup>
+
+  <!-- 
+    DEPENDENCIAS NUGET - SOLO LAS PERMITIDAS
+    Según requerimientos: únicamente Npgsql.EntityFrameworkCore.PostgreSQL
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+  </ItemGroup>
+
+</Project>
+

@@ -1,0 +1,64 @@
+# ============================================================================
+# DOCKERIGNORE - Archivos excluidos del contexto de build
+# Sistema de Facturación Seven
+# ============================================================================
+
+# Directorios de compilación .NET
+**/bin/
+**/obj/
+**/out/
+
+# Directorios de Node.js
+**/node_modules/
+**/dist/
+**/.angular/
+
+# Control de versiones
+.git/
+.gitignore
+.gitattributes
+
+# IDE y editores
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.idea/
+
+# Archivos de documentación
+*.md
+!README.md
+
+# Archivos de configuración local
+*.local
+.env
+.env.local
+.env.*.local
+appsettings.Development.json
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*~
+
+# Archivos de test
+**/TestResults/
+**/*.Tests/
+**/coverage/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.docker/
+

@@ -1,0 +1,36 @@
+<!--
+  Seven Facturación UI - App Shell
+
+  Layout principal con header y contenedor para rutas.
+  Diseño estilo Odoo con color primario #714B67.
+-->
+
+<!-- Header Principal -->
+<header class="app-header">
+  <div class="header-brand">
+    <svg class="brand-icon" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+    </svg>
+    <span class="brand-name">Seven Facturación</span>
+  </div>
+
+  <nav class="header-nav">
+    <a routerLink="/facturacion" routerLinkActive="active" class="nav-link">
+      Facturas
+    </a>
+    <a routerLink="/clientes" routerLinkActive="active" class="nav-link">
+      Clientes
+    </a>
+    <a routerLink="/productos" routerLinkActive="active" class="nav-link">
+      Productos
+    </a>
+    <a routerLink="/facturacion/reportes/ventas" routerLinkActive="active" class="nav-link">
+      Reportes
+    </a>
+  </nav>
+</header>
+
+<!-- Contenedor Principal -->
+<main class="app-main">
+  <router-outlet />
+</main>

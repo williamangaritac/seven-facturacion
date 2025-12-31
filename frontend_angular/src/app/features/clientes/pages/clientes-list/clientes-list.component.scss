@@ -1,0 +1,611 @@
+@use '../../../../shared/styles/variables' as *;
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.page-title {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-md;
+
+  h1 {
+    margin: 0;
+    font-size: $font-size-2xl;
+    color: $color-text-primary;
+  }
+
+  .record-count {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.page-actions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.table-container {
+  background: white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: $spacing-sm $spacing-md;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
+
+  th {
+    background-color: $color-bg-tertiary;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+  }
+
+  tr:hover {
+    background-color: rgba($color-primary, 0.02);
+  }
+}
+
+.actions-cell {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  align-items: flex-start;
+}
+
+.actions-group {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-xs;
+  border-radius: $border-radius-sm;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: $color-bg-tertiary;
+  }
+
+  &.btn-danger:hover {
+    background-color: rgba($color-danger, 0.1);
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: $spacing-2xl !important;
+
+  p {
+    color: $color-text-secondary;
+    margin-bottom: $spacing-md;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-2xl;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $color-border;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Panel de búsqueda rápida por nombre
+.quick-search-panel {
+  margin-bottom: $spacing-lg;
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+
+  .search-icon {
+    position: absolute;
+    left: $spacing-md;
+    font-size: $font-size-lg;
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: $spacing-md $spacing-xl $spacing-md 44px;
+    border: 2px solid $color-border;
+    border-radius: $border-radius-lg;
+    font-size: $font-size-base;
+    transition: all $transition-fast;
+    background: white;
+    box-shadow: $shadow-sm;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+
+    &::placeholder {
+      color: $color-text-muted;
+    }
+  }
+
+  .search-clear {
+    position: absolute;
+    right: $spacing-sm;
+    background: $color-bg-tertiary;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: $color-danger;
+      color: white;
+    }
+  }
+}
+
+// Resaltado de búsqueda
+:host ::ng-deep mark {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: $font-weight-semibold;
+}
+
+// Panel de búsqueda avanzada
+.search-panel {
+  background: white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-sm;
+
+  h3 {
+    margin: 0 0 $spacing-md 0;
+    font-size: $font-size-lg;
+    color: $color-text-primary;
+  }
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: $spacing-md;
+  align-items: end;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $color-text-secondary;
+    }
+
+    input {
+      padding: $spacing-sm;
+      border: 1px solid $color-border;
+      border-radius: $border-radius-md;
+      font-size: $font-size-base;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+}
+
+.filter-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm $spacing-md;
+  margin-bottom: $spacing-md;
+  background-color: rgba($color-info, 0.1);
+  border: 1px solid $color-info;
+  border-radius: $border-radius-md;
+
+  .filter-label {
+    font-weight: $font-weight-medium;
+    color: $color-info;
+  }
+}
+
+.btn-sm {
+  padding: $spacing-xs $spacing-sm;
+  font-size: $font-size-sm;
+}
+
+.badge-info {
+  background-color: $color-info;
+  color: white;
+}
+
+// Botón de predicción destacado
+.btn-prediccion {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-md;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: $border-radius-md;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-prediccion-icon {
+    font-size: $font-size-lg;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .btn-prediccion-text {
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.btn-icon.btn-info {
+  &:hover {
+    background-color: rgba($color-info, 0.1);
+  }
+}
+
+// Panel de predicción de próxima compra
+.prediction-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.prediction-panel {
+  background: white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+.prediction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-xl;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: $border-radius-lg $border-radius-lg 0 0;
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-2xl;
+    color: white;
+    font-weight: $font-weight-bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-size: $font-size-2xl;
+    cursor: pointer;
+    color: white;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: all $transition-fast;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.prediction-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-2xl;
+  gap: $spacing-md;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $color-border;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.prediction-error {
+  text-align: center;
+  padding: $spacing-2xl;
+
+  .error-icon {
+    font-size: 48px;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    color: $color-text-secondary;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.prediction-content {
+  padding: $spacing-lg;
+}
+
+.prediction-info {
+  background: white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md;
+    margin-bottom: $spacing-xs;
+    border-radius: $border-radius-sm;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(102, 126, 234, 0.05);
+      transform: translateX(4px);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      font-weight: $font-weight-semibold;
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      &::before {
+        content: '▸';
+        color: #667eea;
+        font-weight: bold;
+      }
+    }
+
+    .value {
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      font-size: $font-size-base;
+
+      &.badge {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+.prediction-result {
+  text-align: center;
+  padding: $spacing-2xl;
+  background: linear-gradient(135deg, #667eea15 0%, #764ba225 100%);
+  border-radius: $border-radius-lg;
+  margin-bottom: $spacing-lg;
+  border: 2px solid #667eea30;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '🎯';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 120px;
+    opacity: 0.05;
+  }
+
+  .result-label {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-md;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: $font-weight-semibold;
+  }
+
+  .result-date {
+    font-size: 2.5rem;
+    font-weight: $font-weight-bold;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: $spacing-lg;
+    text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .result-status {
+    .badge {
+      font-size: $font-size-base;
+      padding: $spacing-sm $spacing-lg;
+      border-radius: $border-radius-lg;
+      font-weight: $font-weight-bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.8));
+  }
+}
+
+.prediction-explanation {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-left: 4px solid #667eea;
+  padding: $spacing-lg;
+  border-radius: $border-radius-md;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '💡';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 40px;
+    opacity: 0.1;
+  }
+
+  .explanation-title {
+    font-weight: $font-weight-bold;
+    color: #667eea;
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-base;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
+  .explanation-text {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    line-height: 1.8;
+    margin: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+

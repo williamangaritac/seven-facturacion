@@ -1,0 +1,28 @@
+# Dependencias
+node_modules/
+
+# Build
+dist/
+.angular/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de documentación
+*.md
+
+# Archivos de test
+coverage/
+e2e/
+
+# Archivos de configuración local
+.env*
+

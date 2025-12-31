@@ -1,0 +1,131 @@
+<!--
+  @fileoverview Template del formulario de factura.
+  @component FacturaFormComponent
+-->
+
+<div class="form-container">
+  <header class="page-header">
+    <h1>
+      @if (isEditMode()) {
+        ✏️ Editar Factura
+        @if (facturaActual()) {
+          <small class="factura-numero">{{ facturaActual()?.numeroFactura }}</small>
+        }
+      } @else {
+        📄 Nueva Factura
+      }
+    </h1>
+  </header>
+
+  @if (error()) {
+    <div class="alert alert-danger">
+      ⚠️ {{ error() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando datos...</p>
+    </div>
+  } @else {
+    <form [formGroup]="facturaForm" (ngSubmit)="onSubmit()" class="factura-form">
+      <!-- Selección de cliente -->
+      <section class="form-section">
+        <h2>👤 Cliente</h2>
+        <div class="form-group">
+          <label for="clienteId">Seleccionar Cliente *</label>
+          <select
+            id="clienteId"
+            formControlName="clienteId"
+            class="form-control"
+            [class.is-invalid]="facturaForm.get('clienteId')?.invalid && facturaForm.get('clienteId')?.touched">
+            <option [ngValue]="null">-- Seleccione un cliente --</option>
+            @for (cliente of clientes(); track cliente.id) {
+              <option [ngValue]="cliente.id">
+                {{ cliente.nombreCompleto }} - {{ cliente.correoElectronico }}
+              </option>
+            }
+          </select>
+          @if (facturaForm.get('clienteId')?.invalid && facturaForm.get('clienteId')?.touched) {
+            <span class="error-message">Cliente es requerido</span>
+          }
+        </div>
+      </section>
+
+      <!-- Líneas de detalle -->
+      <section class="form-section">
+        <div class="section-header">
+          <h2>📦 Productos</h2>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            (click)="agregarDetalle()">
+            ➕ Agregar línea
+          </button>
+        </div>
+
+        <div class="detalles-container" formArrayName="detalles">
+          @for (detalle of detalles.controls; track $index; let i = $index) {
+            <div class="detalle-row" [formGroupName]="i">
+              <div class="form-group producto-field">
+                <label>Producto *</label>
+                <select formControlName="productoId" class="form-control" (change)="onProductoChange($event, i)">
+                  <option value="">-- Seleccione --</option>
+                  @for (producto of productos(); track producto.id) {
+                    <option [value]="producto.id">
+                      {{ producto.codigo }} - {{ producto.nombre }} ({{ producto.precio | currency:'COP':'symbol':'1.0-0' }})
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group cantidad-field">
+                <label>Cantidad *</label>
+                <input
+                  type="number"
+                  formControlName="cantidad"
+                  class="form-control"
+                  min="1"
+                  (change)="onCantidadChange($event, i)">
+              </div>
+
+              <button
+                type="button"
+                class="btn-icon btn-danger"
+                (click)="eliminarDetalle(i)"
+                [disabled]="detalles.length === 1"
+                title="Eliminar línea">
+                🗑️
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Acciones -->
+      <footer class="form-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelar()">
+          ❌ Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="spinner-sm"></span>
+            Guardando...
+          } @else if (isEditMode()) {
+            💾 Guardar Cambios
+          } @else {
+            💾 Crear Factura
+          }
+        </button>
+      </footer>
+    </form>
+  }
+</div>
+
