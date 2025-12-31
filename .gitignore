@@ -79,3 +79,11 @@ yarn-error.log*
 *.tmp
 *.temp
 
+# ============================================
+# Archivos personales y documentos
+# ============================================
+PANYTALLAZOS FRONTAL/
+*.docx
+~$*.docx
+CORREO ENVIO.docx
+
