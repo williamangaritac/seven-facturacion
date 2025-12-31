@@ -8,8 +8,9 @@
  * @version 1.0.0
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from './core';
 
 @Component({
   selector: 'app-root',
@@ -18,4 +19,10 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {}
+export class App {
+  readonly authService = inject(AuthService);
+
+  logout(): void {
+    this.authService.logout();
+  }
+}

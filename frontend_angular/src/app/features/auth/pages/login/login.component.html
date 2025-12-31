@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>🔐 Seven Facturación</h1>
+      <p>Inicie sesión para continuar</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      @if (error()) {
+        <div class="alert alert-error">
+          ⚠️ {{ error() }}
+        </div>
+      }
+
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Ingrese su usuario"
+          class="form-control"
+          [disabled]="isLoading()"
+          required
+          autofocus>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Ingrese su contraseña"
+          class="form-control"
+          [disabled]="isLoading()"
+          required>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="isLoading()">
+        @if (isLoading()) {
+          <span class="spinner"></span>
+          Iniciando sesión...
+        } @else {
+          Iniciar Sesión
+        }
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p class="hint">💡 Usuario: <strong>admin</strong> | Contraseña: <strong>admin123</strong></p>
+    </div>
+  </div>
+</div>
+

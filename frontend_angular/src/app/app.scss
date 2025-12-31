@@ -68,6 +68,35 @@
   }
 }
 
+// Usuario y logout
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.user-name {
+  color: rgba(white, 0.9);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}
+
+.btn-logout {
+  padding: $spacing-xs $spacing-md;
+  background: rgba(white, 0.15);
+  color: white;
+  border: 1px solid rgba(white, 0.3);
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background: rgba(white, 0.25);
+  }
+}
+
 // Contenedor Principal
 .app-main {
   flex: 1;

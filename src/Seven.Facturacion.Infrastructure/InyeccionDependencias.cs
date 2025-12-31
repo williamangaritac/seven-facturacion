@@ -50,6 +50,7 @@ public static class InyeccionDependencias
         services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
         services.AddScoped<IProductoRepositorio, ProductoRepositorio>();
         services.AddScoped<IFacturaRepositorio, FacturaRepositorio>();
+        services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 
         // ====================================================================
         // UNIDAD DE TRABAJO (Scoped - Por request)
@@ -62,6 +63,7 @@ public static class InyeccionDependencias
         services.AddScoped<IClienteServicio, ClienteServicio>();
         services.AddScoped<IProductoServicio, ProductoServicio>();
         services.AddScoped<IFacturaServicio, FacturaServicio>();
+        services.AddScoped<IAuthServicio, AuthServicio>();
 
         return services;
     }

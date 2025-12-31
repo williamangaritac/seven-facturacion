@@ -80,6 +80,9 @@ app.UseHttpsRedirection();
 // CORS
 app.UseCors("PermitirTodo");
 
+// Middleware de autenticación
+app.UseMiddleware<AuthMiddleware>();
+
 // Autorización (preparado para futuras implementaciones)
 app.UseAuthorization();
 

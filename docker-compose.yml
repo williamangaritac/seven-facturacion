@@ -18,6 +18,8 @@ services:
       - ./Scripts/00_crear_esquema.sql:/docker-entrypoint-initdb.d/00_crear_esquema.sql
       - ./Scripts/01_crear_tablas.sql:/docker-entrypoint-initdb.d/01_crear_tablas.sql
       - ./Scripts/02_insertar_datos.sql:/docker-entrypoint-initdb.d/02_insertar_datos.sql
+      - ./Scripts/04_crear_tabla_usuarios.sql:/docker-entrypoint-initdb.d/04_crear_tabla_usuarios.sql
+      - ./Scripts/05_actualizar_password_admin.sql:/docker-entrypoint-initdb.d/05_actualizar_password_admin.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

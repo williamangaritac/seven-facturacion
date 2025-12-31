@@ -25,8 +25,10 @@
  */
 
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { CONTENT_TYPES, HTTP_HEADERS } from '../config/api.config';
+import { AuthService } from '../services/auth.service';
 
 /**
  * Interface para errores de API normalizados.
@@ -62,18 +64,27 @@ export interface ApiError {
  * provideHttpClient(withInterceptors([apiInterceptor]))
  */
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+
   // Solo interceptar peticiones a nuestra API
   if (!req.url.includes('/api')) {
     return next(req);
   }
 
+  // Preparar headers
+  const headers: Record<string, string> = {
+    [HTTP_HEADERS.CONTENT_TYPE]: CONTENT_TYPES.JSON,
+    [HTTP_HEADERS.ACCEPT]: CONTENT_TYPES.JSON,
+  };
+
+  // Agregar token si existe
+  const token = authService.getToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   // Clonar request con headers adicionales
-  const modifiedReq = req.clone({
-    setHeaders: {
-      [HTTP_HEADERS.CONTENT_TYPE]: CONTENT_TYPES.JSON,
-      [HTTP_HEADERS.ACCEPT]: CONTENT_TYPES.JSON,
-    },
-  });
+  const modifiedReq = req.clone({ setHeaders: headers });
 
   // Log en desarrollo
   if (typeof window !== 'undefined' && (window as Window & { __DEV__?: boolean }).__DEV__) {
@@ -106,6 +117,9 @@ function transformToApiError(error: HttpErrorResponse): ApiError {
       break;
     case 400:
       message = error.error?.message || 'Datos de solicitud inválidos';
+      break;
+    case 401:
+      message = 'No autorizado. Por favor inicie sesión';
       break;
     case 404:
       message = 'Recurso no encontrado';

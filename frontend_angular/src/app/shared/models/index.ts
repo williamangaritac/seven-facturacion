@@ -50,3 +50,9 @@ export type {
   EstadoPrediccion,
 } from './factura.model';
 
+// Auth models
+export type {
+  LoginRequest,
+  LoginResponse,
+} from './auth.model';
+

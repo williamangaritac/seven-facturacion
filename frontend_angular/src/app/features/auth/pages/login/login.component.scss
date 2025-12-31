@@ -1,0 +1,127 @@
+@use '../../../../shared/styles/variables' as *;
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: $spacing-lg;
+}
+
+.login-card {
+  background: white;
+  border-radius: $border-radius-lg;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+}
+
+.login-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: $spacing-2xl $spacing-xl;
+  text-align: center;
+
+  h1 {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+  }
+
+  p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: $font-size-sm;
+  }
+}
+
+.login-form {
+  padding: $spacing-2xl $spacing-xl;
+}
+
+.form-group {
+  margin-bottom: $spacing-lg;
+
+  label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+
+  input {
+    width: 100%;
+    padding: $spacing-md;
+    border: 2px solid $color-border-light;
+    border-radius: $border-radius-md;
+    font-size: $font-size-base;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+      outline: none;
+    }
+
+    &:disabled {
+      background-color: $color-bg-secondary;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.btn-block {
+  width: 100%;
+  padding: $spacing-md;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+}
+
+.alert-error {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: $spacing-md;
+  border-radius: $border-radius-md;
+  margin-bottom: $spacing-lg;
+  font-size: $font-size-sm;
+}
+
+.login-footer {
+  background: $color-bg-secondary;
+  padding: $spacing-lg $spacing-xl;
+  text-align: center;
+  border-top: 1px solid $color-border-light;
+
+  .hint {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+
+    strong {
+      color: #667eea;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+  margin-right: $spacing-xs;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+

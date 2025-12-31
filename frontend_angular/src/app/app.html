@@ -15,19 +15,30 @@
   </div>
 
   <nav class="header-nav">
-    <a routerLink="/facturacion" routerLinkActive="active" class="nav-link">
-      Facturas
-    </a>
-    <a routerLink="/clientes" routerLinkActive="active" class="nav-link">
-      Clientes
-    </a>
-    <a routerLink="/productos" routerLinkActive="active" class="nav-link">
-      Productos
-    </a>
-    <a routerLink="/facturacion/reportes/ventas" routerLinkActive="active" class="nav-link">
-      Reportes
-    </a>
+    @if (authService.isAuthenticated()) {
+      <a routerLink="/facturacion" routerLinkActive="active" class="nav-link">
+        Facturas
+      </a>
+      <a routerLink="/clientes" routerLinkActive="active" class="nav-link">
+        Clientes
+      </a>
+      <a routerLink="/productos" routerLinkActive="active" class="nav-link">
+        Productos
+      </a>
+      <a routerLink="/facturacion/reportes/ventas" routerLinkActive="active" class="nav-link">
+        Reportes
+      </a>
+    }
   </nav>
+
+  @if (authService.isAuthenticated()) {
+    <div class="header-user">
+      <span class="user-name">👤 {{ authService.currentUsername() }}</span>
+      <button (click)="logout()" class="btn-logout" title="Cerrar sesión">
+        🚪 Salir
+      </button>
+    </div>
+  }
 </header>
 
 <!-- Contenedor Principal -->

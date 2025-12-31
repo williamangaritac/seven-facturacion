@@ -25,6 +25,7 @@
  */
 
 import { InjectionToken } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 /**
  * Interface que define la estructura de configuración de la API.
@@ -62,18 +63,18 @@ export const API_CONFIG_TOKEN = new InjectionToken<ApiConfiguration>('API_CONFIG
 
 /**
  * Configuración por defecto de la API.
- * 
+ *
  * @readonly
  * @constant
- * 
- * @property {string} baseUrl - URL base del backend .NET 10
+ *
+ * @property {string} baseUrl - URL base del backend .NET 10 (desde environment)
  * @property {number} timeout - 30 segundos de timeout por defecto
  * @property {string} version - Versión actual de la API
  * @property {ApiEndpoints} endpoints - Rutas de recursos REST
  */
 export const API_CONFIG: ApiConfiguration = {
-  baseUrl: 'https://localhost:49497/api',
-  timeout: 30000,
+  baseUrl: environment.apiUrl,
+  timeout: environment.apiTimeout,
   version: 'v1',
   endpoints: {
     clientes: '/Clientes',

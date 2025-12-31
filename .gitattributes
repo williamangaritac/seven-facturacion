@@ -1,0 +1,43 @@
+# ============================================================================
+# Git Attributes - Sistema de Facturación Seven
+# ============================================================================
+
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Shell scripts should always use LF
+*.sh text eol=lf
+
+# PowerShell scripts should use CRLF on Windows
+*.ps1 text eol=crlf
+
+# SQL scripts should use LF
+*.sql text eol=lf
+
+# Source code
+*.cs text diff=csharp
+*.ts text
+*.js text
+*.json text
+*.html text
+*.css text
+*.scss text
+
+# Docker files
+Dockerfile text eol=lf
+docker-compose*.yml text eol=lf
+.dockerignore text eol=lf
+
+# Documentation
+*.md text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.docx binary
+*.zip binary
+

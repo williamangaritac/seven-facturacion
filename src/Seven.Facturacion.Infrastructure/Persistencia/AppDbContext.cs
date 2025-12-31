@@ -36,6 +36,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> opciones) : DbContext(o
     /// </summary>
     public DbSet<DetalleFactura> DetallesFactura => Set<DetalleFactura>();
 
+    /// <summary>
+    /// Conjunto de entidades Usuario.
+    /// </summary>
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
+
     // ========================================================================
     // CONFIGURACIÓN DEL MODELO
     // ========================================================================
@@ -53,6 +58,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> opciones) : DbContext(o
         modelBuilder.ApplyConfiguration(new ProductoConfiguracion());
         modelBuilder.ApplyConfiguration(new FacturaConfiguracion());
         modelBuilder.ApplyConfiguration(new DetalleFacturaConfiguracion());
+        modelBuilder.ApplyConfiguration(new UsuarioConfiguracion());
 
         // Configurar esquema por defecto para PostgreSQL
         modelBuilder.HasDefaultSchema("facturacion");
