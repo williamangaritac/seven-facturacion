@@ -83,7 +83,11 @@ yarn-error.log*
 # Archivos personales y documentos
 # ============================================
 PANYTALLAZOS FRONTAL/
+gpt/
 *.docx
 ~$*.docx
 CORREO ENVIO.docx
+COMANDOS INCIAR SERVIVIOS.txt
+PROMPT_AGENTE_CLEAN_ARCHITECTURE.md
+promt frontend, basado en backend.docx
 
