@@ -41,7 +41,7 @@ if ($continue -ne "s" -and $continue -ne "S") {
 }
 
 # Navegar a la carpeta del backend
-$backendPath = "src\Seven.Facturacion.Api"
+$backendPath = "app_backend\src\Seven.Facturacion.Api"
 
 if (-not (Test-Path $backendPath)) {
     Write-Host "❌ No se encuentra la carpeta $backendPath" -ForegroundColor Red

@@ -11,19 +11,19 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0-preview AS build
 WORKDIR /src
 
 # Copiar archivos de proyecto y restaurar dependencias
-COPY src/Seven.Facturacion.Domain/*.csproj ./Seven.Facturacion.Domain/
-COPY src/Seven.Facturacion.Application/*.csproj ./Seven.Facturacion.Application/
-COPY src/Seven.Facturacion.Infrastructure/*.csproj ./Seven.Facturacion.Infrastructure/
-COPY src/Seven.Facturacion.Api/*.csproj ./Seven.Facturacion.Api/
+COPY ./src/Seven.Facturacion.Domain/*.csproj ./Seven.Facturacion.Domain/
+COPY ./src/Seven.Facturacion.Application/*.csproj ./Seven.Facturacion.Application/
+COPY ./src/Seven.Facturacion.Infrastructure/*.csproj ./Seven.Facturacion.Infrastructure/
+COPY ./src/Seven.Facturacion.Api/*.csproj ./Seven.Facturacion.Api/
 
 # Restaurar dependencias
 RUN dotnet restore ./Seven.Facturacion.Api/Seven.Facturacion.Api.csproj
 
 # Copiar todo el código fuente
-COPY src/Seven.Facturacion.Domain/ ./Seven.Facturacion.Domain/
-COPY src/Seven.Facturacion.Application/ ./Seven.Facturacion.Application/
-COPY src/Seven.Facturacion.Infrastructure/ ./Seven.Facturacion.Infrastructure/
-COPY src/Seven.Facturacion.Api/ ./Seven.Facturacion.Api/
+COPY ./src/Seven.Facturacion.Domain/ ./Seven.Facturacion.Domain/
+COPY ./src/Seven.Facturacion.Application/ ./Seven.Facturacion.Application/
+COPY ./src/Seven.Facturacion.Infrastructure/ ./Seven.Facturacion.Infrastructure/
+COPY ./src/Seven.Facturacion.Api/ ./Seven.Facturacion.Api/
 
 # Compilar y publicar en modo Release
 RUN dotnet publish ./Seven.Facturacion.Api/Seven.Facturacion.Api.csproj \

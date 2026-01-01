@@ -51,7 +51,7 @@ if [ "$continue" != "s" ] && [ "$continue" != "S" ]; then
 fi
 
 # Navegar a la carpeta del backend
-backend_path="src/Seven.Facturacion.Api"
+backend_path="app_backend/src/Seven.Facturacion.Api"
 
 if [ ! -d "$backend_path" ]; then
     echo -e "${RED}❌ No se encuentra la carpeta $backend_path${NC}"
